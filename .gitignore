@@ -1,0 +1,33 @@
+# 本机资料与未审阅的项目交接指令
+AGENTS.md
+docs/github-upload-readiness.md
+
+# 模型、运行器及缓存
+*.gguf
+*.ggml
+*.safetensors
+*.bin
+*.exe
+*.dll
+__pycache__/
+*.pyc
+.venv/
+venv/
+models/
+
+# 日志与运行输出；脱敏后需有意选择性收录
+*.log
+*.out
+*.tmp
+*.bak
+test-output/
+
+# 密钥和本机配置
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+launcher.ini
+presets.generated.ini

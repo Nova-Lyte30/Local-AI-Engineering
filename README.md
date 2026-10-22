@@ -1,6 +1,6 @@
 # Local AI Engineering
 
-两个相互衔接的个人项目：先用 llama.cpp 在 Windows 上部署本地模型，再将模型接入 Cline Desktop，搭建本地 Agent 工作流。下表可直接进入各项目的说明与证据。
+个人项目：先用 llama.cpp 在 Windows 上部署本地模型，再将模型接入 Cline Desktop，搭建本地 Agent 工作流。下表可直接进入各项目的说明与证据。
 
 **个人贡献与 AI 辅助披露：** [查看个人参与工作、第三方依赖与证据边界](docs/contributions.md)。公开的复现脚本、历史启动器与 Codex 协助整理的内容分别说明，不将工具能力或未通过的实验表述为个人原创成果。
 
@@ -33,7 +33,6 @@
 
 ### 架构与流程
 ![本地AI Agent架构图](assets/diagrams/agent-architecture.png)
-`
 
 模型在服务启动阶段加载；是否执行工具、是否需要人工审批取决于任务与客户端设置。Git 操作不是默认步骤。图示只解释可能的链路，实际执行与验收状态以[报告](tests/agent-acceptance-report.md)为准。
 

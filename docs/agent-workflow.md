@@ -75,6 +75,22 @@ flowchart LR
 - **Git 差异为空**：未跟踪文件不会出现在普通 `git diff` 中；测试仓库应先建立基线提交，再修改已跟踪文件，检查差异和第二次提交。
 - **长任务中断**：把阶段、产物和完成状态写入磁盘；在新会话读取记录后继续。该流程在本轮验收通过前仅是待验证方法。
 
+## P0：文件任务字节级验收与受限修复（2026-10-22）
+
+[本机最新隔离复验](../tests/evidence/agent-p0-recheck-2026-10-22.md)证实：Cline 能按绝对路径创建文件并对原文件进行读取、编辑，但两轮真实任务都没有产生所要求的单个末尾 LF。Python 能运行不等于源码字节精确匹配。旧的第 04、05 项仍应判为“需修正”。
+
+仓库新增 [agent-file-guard.py](../scripts/agent-file-guard.py) 作为**独立质量门禁**：默认只读，验证目标路径受限于隔离目录、源代码和最终 LF；只有在正文已完全匹配时，显式指定 `--normalize-newline` 才会规范化 BOM/末尾换行。错误正文或越界路径会拒绝改写。PowerShell 5.1 推荐 `--expected-print TOKEN`，避免嵌套引号影响参数字节。
+
+```powershell
+$root='D:\AI-Workspace\Sandbox\Agent-P0-2026-10-22'
+$file=Join-Path $root 'probe.py'
+python -B .\scripts\agent-file-guard.py --root $root --file $file --expected-print AGENT_P0_EDIT_OK
+# 如实际正文已正确、只是 BOM/换行问题，经人工审阅后才执行：
+python -B .\scripts\agent-file-guard.py --root $root --file $file --expected-print AGENT_P0_EDIT_OK --normalize-newline
+```
+
+本次校验与规范化由 Remote Desktop Commander 调用，不代表 Cline 已具备自动恢复能力。安全做法是在每次 Cline 文件操作后独立核对文件，失败时停止任务并保留证据，避免无限重试耗尽上下文。
+
 ## 适用范围与参考
 
 本项目展示本机 Agent 的配置、基础工具链和可复核测试方法。它不证明长期稳定性、工作区外访问被系统阻断、自动故障恢复，或所有外部网络行为被禁止。危险操作保持人工审批；不在正式项目或私人文件上做破坏性测试。

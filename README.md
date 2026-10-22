@@ -33,23 +33,7 @@
 
 ### 架构与流程
 ![本地AI Agent架构图](assets/diagrams/agent-architecture.png)
-```mermaid
-flowchart LR
-    U[用户任务] --> C[Cline Desktop]
-    C -->|本机 API 请求| S[llama-server]
-    S <--> M[已加载的 GGUF 模型]
-    S -->|文本或工具请求| C
-    C --> Q{需要工具操作?}
-    Q -->|否| R[回复用户]
-    Q -->|是| A{客户端要求审批?}
-    A -->|是| H{用户批准?}
-    H -->|否| R
-    H -->|是| T[执行本地工具]
-    A -->|否| T
-    T --> W[隔离工作区]
-    W --> C
-    C --> R
-```
+`
 
 模型在服务启动阶段加载；是否执行工具、是否需要人工审批取决于任务与客户端设置。Git 操作不是默认步骤。图示只解释可能的链路，实际执行与验收状态以[报告](tests/agent-acceptance-report.md)为准。
 

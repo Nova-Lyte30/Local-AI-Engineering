@@ -1,0 +1,15 @@
+2026-10-21 独立端口模型加载日志摘录
+执行方式：scripts/llama-oneclick.example.ps1；Qwen IQ2_M；-Ctx 2048；-GpuLayers 0；-Port 18080；-Predict 64
+路径与模型文件加载行未收录。以下为终端实际输出摘录：
+
+0.03.536.401 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 2048, kv_unified = 'true'
+0.03.546.092 I srv  llama_server: model loaded
+0.03.546.096 I srv  llama_server: listening on http://127.0.0.1:18080
+
+请求 /health、/v1/models、/v1/completions 时，当前执行环境返回：
+以一种访问权限不允许的方式做了一个访问套接字的尝试。
+
+随后中断测试进程，终端输出：
+0.28.616.533 I srv    operator(): operator(): cleaning up before exit...
+
+这份摘录证明 2048 上下文、CPU 模式下的加载过程；不包含成功的 API 响应或 16K 输入测试。

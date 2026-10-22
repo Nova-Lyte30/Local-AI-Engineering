@@ -1,11 +1,11 @@
 # Local AI Engineering
 
-在 Windows 上搭建并验证本地 AI 推理环境，再将它接入 Cline Desktop，探索 Agent 的文件、终端与代码工作流。本仓库对应两段个人项目经历；每项结论都链接到测试记录，并注明未验证的边界。
+两个相互衔接的个人项目：先用 llama.cpp 在 Windows 上部署本地模型，再将模型接入 Cline Desktop，搭建本地 Agent 工作流。下表可直接进入各项目的说明与证据。
 
-| 项目 | 关注点 | 直接入口 |
+| 项目 | 一眼看懂 | 直接入口 |
 | --- | --- | --- |
-| **01 · 开源模型本地部署与推理环境配置** | llama.cpp、GGUF 模型、启动配置、本机 API 和推理测试 | [部署说明](docs/model-deployment.md) · [测试结果](tests/model-test-report.md) |
-| **02 · 本地 AI Agent 工作流搭建与应用** | Cline Desktop 接入本机模型、工具调用、文件操作及故障排查 | [工作流说明](docs/agent-workflow.md) · [11 项验收状态](tests/agent-acceptance-report.md) |
+| **01 · 开源模型本地部署与推理环境配置** | Qwen 与 Cosmos 模型加载、本机 API、量化和上下文配置 | **[查看项目一](docs/model-deployment.md)** · [测试与证据](tests/model-test-report.md) |
+| **02 · 本地 AI Agent 工作流搭建与应用** | Cline 接入本机模型，观察对话、工具调用与文件工作流 | **[查看项目二](docs/agent-workflow.md)** · [逐项验证记录](tests/agent-acceptance-report.md) |
 
 ## 01 · 开源模型本地部署与推理环境配置
 
@@ -25,29 +25,40 @@
 
 ## 02 · 本地 AI Agent 工作流搭建与应用
 
-将 Cline Desktop 连接到本机 llama.cpp 的 OpenAI 兼容接口，区分模型生成的 `tool_calls`、Cline 发起的工具调用、人工审批和实际文件产物。项目记录了可重现的配置步骤，也如实保留文件路径、引号与上下文超限等失败案例。
+将 Cline Desktop 连接到本机 llama.cpp 的 OpenAI 兼容接口，梳理用户任务、模型响应与本地工具的交互。现有记录覆盖服务连通、模型 ID、两轮 Cline 短对话、文件读取和编辑工具调用；历史计算器样例的五项单元测试也已独立重跑。文件内容精度、审批记录和更长任务的验证进度见下表。
 
 **从这里看证据：** [架构、配置与故障排查](docs/agent-workflow.md) → [逐项验收与复现步骤](tests/agent-acceptance-report.md)
 
 ### 架构与流程
 
-![本地 AI Agent 架构示意：用户、Cline、llama-server、GGUF 模型、工具与工作区](assets/diagrams/agent-architecture.png)
+```mermaid
+flowchart LR
+    U[用户任务] --> C[Cline Desktop]
+    C -->|本机 API 请求| S[llama-server]
+    S <--> M[已加载的 GGUF 模型]
+    S -->|文本或工具请求| C
+    C --> Q{需要工具操作?}
+    Q -->|否| R[回复用户]
+    Q -->|是| A{客户端要求审批?}
+    A -->|是| H{用户批准?}
+    H -->|否| R
+    H -->|是| T[执行本地工具]
+    A -->|否| T
+    T --> W[隔离工作区]
+    W --> C
+    C --> R
+```
 
-<details>
-<summary>展开本地 AI Agent 工作流程图</summary>
+模型在服务启动阶段加载；是否执行工具、是否需要人工审批取决于任务与客户端设置。Git 操作不是默认步骤。图示只解释可能的链路，实际执行与验收状态以[报告](tests/agent-acceptance-report.md)为准。
 
-![本地 AI Agent 工作流程示意：任务、推理、工具请求、审批与结果](assets/diagrams/agent-workflow.png)
-
-</details>
-
-> 两张图是架构与可能流程的示意。图中的 Git 提交／恢复、工具执行和用户审批并非每次任务都会发生，也不表示 11 项已全部通过；实际模型 ID、工具调用和验收状态以[报告](tests/agent-acceptance-report.md)为准。
-
-| 本轮验收 | 实际结果 |
+| 验证范围 | 当前记录 |
 | --- | --- |
-| 服务、模型列表、Cline 短对话（01–03） | 通过 |
-| 创建文件与精确修改（04–05） | 未通过；保留错误与产物记录 |
-| 终端人工审批（06） | 有命令与执行截图，审批动作和原始工具输出证据不完整 |
-| 多文件、Git、整理、恢复与安全检查（07–11） | 按用户要求跳过本轮复验 |
+| 服务、模型列表、Cline 短对话（01–03） | 已按记录核对 |
+| 文件创建与精确修改（04–05） | 观察到工具调用；路径和内容精度仍需修正 |
+| 终端人工审批（06） | 有命令与执行截图；审批动作和原始工具输出待补证 |
+| 多文件、Git、整理、恢复与安全检查（07–11） | 本轮按用户安排留待后续验证 |
+
+后续复验计划不改变上表状态；只有取得新的工具记录和独立核对结果，才更新相应结论。
 
 ## 阅读与复现
 

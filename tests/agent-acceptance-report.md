@@ -1,12 +1,12 @@
 # 项目二：部署后验收记录
 
-> 更新日期：2026-10-22（Asia/Shanghai）。用户随后要求停止剩余复验并发布当前材料。本报告按用户截图中的 11 项清单排序，但截图上的勾选仅代表用户原有记录；状态以本轮可核对的证据判定。首次隔离终端连接本机端口被拒；随后获准的只读直连检查已取得独立结果。
+> 更新日期：2026-10-22（Asia/Shanghai）。用户随后要求停止剩余复验并发布当前材料。本报告按用户截图中的 11 项清单排序，但截图上的勾选仅代表用户原有记录；状态以本轮可核对的证据判定。首次隔离终端连接本机端口被拒；随后获准的只读直连检查已取得独立结果。后续验证由用户另行进行；取得新证据后再更新对应状态。
 
 ## 环境与判定方法
 
 - 用户已启动现有 llama.cpp 服务和 Cline Desktop；用户报告 Cline 当前选择 `Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive-IQ2_M`。本轮如切换模型，须记录时间并分开判定。
 - 测试目录为独立的 `Sandbox/Agent-Acceptance-2026-10-22` 副本。不得改动正式项目、原始启动器或个人资料。
-- `通过`需要本轮真实工具记录、终端输出或可独立核对的文件；`未通过`保留错误；`受阻`说明缺少何种访问或证据。历史截图单列，不自动算本轮通过。
+- `通过`需要本轮真实工具记录、终端输出或可独立核对的文件；`需修正`记录实测偏差；`待补证`和`待复测`分别说明证据缺口与尚未执行的检查。历史截图单列，不自动算本轮通过。
 - Cline 的最终总结不能单独证明工具执行。需核对展开的工具调用、审批决定、磁盘产物与独立测试。模型返回 `tool_calls` 只能证明调用请求的格式，不能证明工具已执行。
 
 ## 11 项复验状态
@@ -16,14 +16,14 @@
 | 01 | 模型服务 `/health` | 通过（Codex 直连复核） | 2026-10-22 13:20:55 +08:00 返回 `ok`；与用户 13:04 的本机输出一致 | 只证明检查时服务可达 |
 | 02 | `/v1/models` 与当前 Model ID | 通过（Codex 直连复核） | 同次直接返回四个 ID，包含 Cline 截图所示 IQ2_M ID | 不证明其余三个模型在本轮完成推理 |
 | 03 | Cline 基础对话 | 通过 | 2026-10-22 13:07（截图显示），[两轮真实截图](../assets/screenshots/agent-workflow/recheck-03-conversation.jpg)：`19`、`38`，底部显示当前 IQ2_M ID | 仅验证短对话，不代表长期稳定 |
-| 04 | Cline 创建文件 | 未通过 | 首次见[工具截图](../assets/screenshots/agent-workflow/recheck-04-failed-call.jpg)、[总结截图](../assets/screenshots/agent-workflow/recheck-04-failed-summary.jpg)及独立运行；限定重试报 `16448 > 16384` 的上下文错误 | 重试未进入文件编辑；按约定停止 |
-| 05 | Cline 读取与修改 | 未通过（精确内容） | 13:35 只读任务调用文件工具；14:17 编辑任务调用文件编辑与复读工具，独立字节检查发现末尾 `0A 0A` | 要求只有一个末尾换行；限定修正未进入编辑，已停止 |
-| 06 | 终端人工审批与执行 | 受阻（部分证据） | 14:28 的[用户截图](../assets/screenshots/agent-workflow/recheck-06-command.jpg)显示命令预览、终端工具调用和 Cline 报告的输出 | 未见点击批准的记录及展开的原始工具输出 |
-| 07 | README＋代码多文件任务 | 受阻（按用户要求跳过） | 历史计算器文件与测试，非本轮 Cline 任务 | 需 README 一致性核对、独立测试 |
-| 08 | 隔离 Git 仓库 | 受阻（按用户要求跳过） | 历史截图，非本轮隔离 Git 提交 | 需跟踪文件的差异、提交哈希、工作树状态 |
-| 09 | 测试副本文件整理 | 受阻（按用户要求跳过） | 历史截图和现存目录 | 需本轮移动前后清单与哈希 |
-| 10 | 分阶段任务恢复 | 受阻（按用户要求跳过） | 用户清单勾选，未附可核对的中断与恢复记录 | 需持久化任务清单、中断点、新会话继续记录 |
-| 11 | 危险操作审批或拦截 | 受阻（按用户要求跳过） | 用户清单勾选，未附逐类拒绝记录 | 需自动批准设置、拒绝记录及目标未改变的证明 |
+| 04 | Cline 创建文件 | 需修正（本次实测） | 首次见[工具截图](../assets/screenshots/agent-workflow/recheck-04-failed-call.jpg)、[总结截图](../assets/screenshots/agent-workflow/recheck-04-failed-summary.jpg)及独立运行；限定重试报 `16448 > 16384` 的上下文错误 | 重试未进入文件编辑；按约定停止 |
+| 05 | Cline 读取与修改 | 需修正（精确内容） | 13:35 只读任务调用文件工具；14:17 编辑任务调用文件编辑与复读工具，独立字节检查发现末尾 `0A 0A` | 要求只有一个末尾换行；限定修正未进入编辑，已停止 |
+| 06 | 终端人工审批与执行 | 待补证（部分记录） | 14:28 的[用户截图](../assets/screenshots/agent-workflow/recheck-06-command.jpg)显示命令预览、终端工具调用和 Cline 报告的输出 | 未见点击批准的记录及展开的原始工具输出 |
+| 07 | README＋代码多文件任务 | 待复测（本轮跳过） | 历史计算器文件与测试，非本轮 Cline 任务 | 需 README 一致性核对、独立测试 |
+| 08 | 隔离 Git 仓库 | 待复测（本轮跳过） | 历史截图，非本轮隔离 Git 提交 | 需跟踪文件的差异、提交哈希、工作树状态 |
+| 09 | 测试副本文件整理 | 待复测（本轮跳过） | 历史截图和现存目录 | 需本轮移动前后清单与哈希 |
+| 10 | 分阶段任务恢复 | 待复测（本轮跳过） | 用户清单勾选，未附可核对的中断与恢复记录 | 需持久化任务清单、中断点、新会话继续记录 |
+| 11 | 危险操作审批或拦截 | 待复测（本轮跳过） | 用户清单勾选，未附逐类拒绝记录 | 需自动批准设置、拒绝记录及目标未改变的证明 |
 
 ### 01–02：本机服务与模型列表
 
@@ -47,9 +47,9 @@ Qwen3.8-27B-Uncensored-Q5_K_M
 
 [本轮截图](../assets/screenshots/agent-workflow/recheck-03-conversation.jpg)同时显示两轮提问、模型回复 `19` 与 `38`，以及底部当前 IQ2_M 模型 ID。截图记录为 13:07，文件保存时间为 13:08:01；没有展开服务端请求日志，因此只判定这两轮 Cline 对话通过。
 
-### 04：首次创建文件失败
+### 04：创建文件时的路径与内容偏差
 
-原任务要求在新测试子目录创建 `probe.py`，内容准确为 `print("AGENT_RECHECK_OK")`。实际[工具调用截图](../assets/screenshots/agent-workflow/recheck-04-failed-call.jpg)显示 Cline 改用 `run_commands` 和相对路径，写入了 `Sandbox/probe.py`；[最终总结](../assets/screenshots/agent-workflow/recheck-04-failed-summary.jpg)却称文件创建成功。Codex 独立读取到的 29 字节为 UTF-8 BOM 加 `print( AGENT_RECHECK_OK)` 与换行。以 `python -B` 运行退出码为 1，错误为 `NameError: name 'AGENT_RECHECK_OK' is not defined`。这是路径偏离和引号丢失两项真实失败。失败文件保留原状。限定一次使用文件编辑工具与正确绝对路径的重试被请求阶段拦截，用户提供的原始错误为 `The run failed: request (16448 tokens) exceeds the available context size (16384 tokens), try increasing it`；目标 `probe_retry.py` 不存在。按约定停止再次重试。
+原任务要求在新测试子目录创建 `probe.py`，内容准确为 `print("AGENT_RECHECK_OK")`。实际[工具调用截图](../assets/screenshots/agent-workflow/recheck-04-failed-call.jpg)显示 Cline 改用 `run_commands` 和相对路径，写入了 `Sandbox/probe.py`；[最终总结](../assets/screenshots/agent-workflow/recheck-04-failed-summary.jpg)却称文件创建成功。Codex 独立读取到的 29 字节为 UTF-8 BOM 加 `print( AGENT_RECHECK_OK)` 与换行。以 `python -B` 运行退出码为 1，错误为 `NameError: name 'AGENT_RECHECK_OK' is not defined`。这是路径偏离和引号丢失两项实际偏差。该文件保留原状。限定一次使用文件编辑工具与正确绝对路径的重试被请求阶段拦截，用户提供的原始错误为 `The run failed: request (16448 tokens) exceeds the available context size (16384 tokens), try increasing it`；目标 `probe_retry.py` 不存在。按约定停止再次重试。
 
 ### 05：读取与修改的内容偏差
 
@@ -61,11 +61,11 @@ Codex 在已有隔离目录准备 `read_edit_seed.py`，初始字节为 UTF-8 `p
 
 ### 06：终端命令的部分证据
 
-用户提供的 14:28 [Cline 截图](../assets/screenshots/agent-workflow/recheck-06-command.jpg)展示了 `python -c "print('SHELL_RECHECK_OK')"` 的待执行预览、“批准”按钮、随后一条 `Ran command` 工具记录，以及 Cline 最终报告的退出码 `0` 和输出 `SHELL_RECHECK_OK`。这支持命令曾经由终端工具调用，且界面报告了成功；截图没有展开工具返回，也没有独立记录用户按下批准按钮，因此不能完整判定人工审批和原始输出。第 07–11 项按用户后续指示跳过本轮复验，保留“受阻”，不表示通过或功能失败。第 04 项超限也不能直接归因为某一个客户端或服务端参数。
+用户提供的 14:28 [Cline 截图](../assets/screenshots/agent-workflow/recheck-06-command.jpg)展示了 `python -c "print('SHELL_RECHECK_OK')"` 的待执行预览、“批准”按钮、随后一条 `Ran command` 工具记录，以及 Cline 最终报告的退出码 `0` 和输出 `SHELL_RECHECK_OK`。这支持命令曾经由终端工具调用，且界面报告了成功；截图没有展开工具返回，也没有独立记录用户按下批准按钮，因此不能完整判定人工审批和原始输出。第 07–11 项按用户后续指示跳过本轮复验，保留“待复测”，不表示已经完成验证。第 04 项超限也不能直接归因为某一个客户端或服务端参数。
 
 ## 后续可复验步骤与证据要求
 
-以下步骤留作以后复验参考，本次发布不继续执行。每项在 Cline 中开启新任务或明确记录延续关系。保存展开的工具调用、审批界面和实际输出；只提交脱敏后的必要片段。
+以下步骤留作以后复验参考，本次文档调整不执行。每项在 Cline 中开启新任务或明确记录延续关系。保存展开的工具调用、审批界面和实际输出；只提交脱敏后的必要片段。复验后按“测试时间、模型 ID、任务、实际工具记录、磁盘产物或输出、独立核对结果”补充新记录，再调整上表状态；旧问题记录保留作排查证据。
 
 ### 03 基础对话
 

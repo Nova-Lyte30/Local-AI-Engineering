@@ -1,6 +1,6 @@
 # Local AI Engineering
 
-本仓库展示开源模型本地部署与推理环境配置项目，仅涵盖 Qwen IQ2_M 与 Cosmos-Reason2-8B。
+本仓库展示两段个人项目经历：开源模型本地部署与推理环境配置，以及在本地推理服务上搭建 Cline Desktop Agent 工作流。项目一涵盖 Qwen IQ2_M 与 Cosmos-Reason2-8B；项目二将模型接口、Cline 工具调用与人工审批串联，并逐项记录验收证据。
 
 ## 项目一：开源模型本地部署与推理环境配置
 
@@ -17,6 +17,13 @@
 - [历史会话导出证据摘要](tests/evidence/llama-export-audit-2026-10-21.md)
 - [模型来源与许可核对](docs/sources.md)
 - [安全复现示例](scripts/llama-oneclick.example.ps1)
+
+## 项目二：本地 AI Agent 工作流搭建与应用
+
+在 Windows 上将 Cline Desktop 接入本机 llama.cpp OpenAI 兼容接口。本轮已复核服务、模型列表和短对话；文件创建及精确修改未通过，终端命令有部分截图证据，其余多文件、Git、恢复与安全审批场景按用户要求跳过复验。模型生成 `tool_calls`、Cline 实际执行和独立检查分别记录。
+
+- [工作流架构、配置与故障排查](docs/agent-workflow.md)
+- [部署后 11 项验收状态与复现步骤](tests/agent-acceptance-report.md)
 
 ## 阅读说明
 

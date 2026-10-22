@@ -32,7 +32,7 @@
 **从这里看证据：** [架构、配置与故障排查](docs/agent-workflow.md) → [逐项验收与复现步骤](tests/agent-acceptance-report.md)
 
 ### 架构与流程
-
+![本地AI Agent架构图](assets/diagrams/agent-architecture.png)
 ```mermaid
 flowchart LR
     U[用户任务] --> C[Cline Desktop]

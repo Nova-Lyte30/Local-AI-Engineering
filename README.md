@@ -1,6 +1,6 @@
 # Local AI Engineering
 
-个人项目：先用 llama.cpp 在 Windows 上部署本地模型，再将模型接入 Cline Desktop，搭建本地 Agent 工作流。下表可直接进入各项目的说明与证据。
+个人项目：先用 llama.cpp 在 Windows 电脑上部署本地开源模型，再将模型接入 Cline Desktop，搭建本地 Agent 工作流。下表可直接进入各项目的说明与证据。
 
 **个人贡献与 AI 辅助披露：** [查看个人参与工作、第三方依赖与证据边界](docs/contributions.md)。公开的复现脚本、历史启动器与 Codex 协助整理的内容分别说明，不将工具能力或未通过的实验表述为个人原创成果。
 
@@ -11,9 +11,13 @@
 
 ## 01 · 开源模型本地部署与推理环境配置
 
-使用 llama.cpp 在 Windows 与 NVIDIA GPU 设备上运行 Qwen IQ2_M 和 Cosmos-Reason2-8B，并通过本机 OpenAI 兼容接口调用。原始 `start.bat` 的复测覆盖模型切换、短答、近 16K 索引检索、顺序请求与 Cosmos 图片输入。16,384-token 边界请求虽然答对，但服务日志标记了截断；这些结果不代表无截断长上下文或长期稳定性。
+使用 llama.cpp 在配备 NVIDIA GPU 的 Windows 电脑上运行 Qwen IQ2_M 和 Cosmos-Reason2-8B，并通过本机 OpenAI 兼容接口调用。原始 `start.bat` 的复测覆盖模型切换、短答、近 16K 索引检索、顺序请求与 Cosmos 图片输入。16,384-token 边界请求虽然答对，但服务日志标记了截断；这些结果不代表无截断长上下文或长期稳定性。
 
 **从这里看证据：** [部署与技术说明](docs/model-deployment.md) → [简历主张与证据](docs/evidence-matrix.md) → [测试报告](tests/model-test-report.md)
+
+### 项目架构图
+
+![本地模型推理架构](assets/diagrams/local-llm-runtime-architecture.svg)
 
 <details>
 <summary>展开项目一的脚本、原始结果和排查记录</summary>
@@ -31,8 +35,9 @@
 
 **从这里看证据：** [架构、配置与故障排查](docs/agent-workflow.md) → [逐项验收与复现步骤](tests/agent-acceptance-report.md)
 
-### 架构与流程
-![本地AI Agent架构图](assets/diagrams/agent-architecture.png)
+### 项目架构图
+
+![本地 AI Agent 工作流架构](assets/diagrams/local-agent-architecture.svg)
 
 模型在服务启动阶段加载；是否执行工具、是否需要人工审批取决于任务与客户端设置。Git 操作不是默认步骤。图示只解释可能的链路，实际执行与验收状态以[报告](tests/agent-acceptance-report.md)为准。
 

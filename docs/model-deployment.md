@@ -12,12 +12,7 @@
 
 2026-10-21 本机只读检查识别到 Intel i9-14900HX、NVIDIA GeForce RTX 4060 Laptop GPU（`nvidia-smi` 报告 8188 MiB，驱动 617.42）。系统注册表产品名与版本号口径不一致，Windows 展示版本待通过系统界面确认。`llama-server.exe --version` 输出 `0.6.0-dev`、build 11461、commit `4d756bc72`。该版本帮助文本包含本例使用的 `--model`、`--host`、`--port`、`--ctx-size`、`--gpu-layers` 与 `--predict` 参数。
 
-```mermaid
-flowchart LR
-    U[本机用户或客户端] -->|127.0.0.1:8080/v1| S[llama-server]
-    S --> Q[本地 GGUF 模型]
-    S --> G[NVIDIA GPU / 系统内存]
-```
+![本地模型推理架构](../assets/diagrams/local-llm-runtime-architecture.svg)
 
 接口绑定 `127.0.0.1`。它不是公网展示地址，也不应将未认证的服务直接暴露到外网。
 

@@ -17,23 +17,7 @@
 
 ## 架构与工作流程
 
-```mermaid
-flowchart LR
-    U[用户任务] --> C[Cline Desktop]
-    C -->|本机 API 请求| S[llama-server]
-    S <--> M[已加载的 GGUF 模型]
-    S -->|文本或工具请求| C
-    C --> Q{需要工具操作?}
-    Q -->|否| R[回复用户]
-    Q -->|是| A{客户端要求审批?}
-    A -->|是| H{用户批准?}
-    H -->|否| R
-    H -->|是| T[执行本地工具]
-    A -->|否| T
-    T --> W[隔离工作区]
-    W --> C
-    C --> R
-```
+![本地 AI Agent 工作流架构](../assets/diagrams/local-agent-architecture.svg)
 
 模型在服务启动阶段加载；收到 `tool_calls` 后，Cline 是否执行工具及是否要求人工审批取决于任务与客户端设置。Git 提交／恢复是独立的可选操作，不属于每次任务的固定链路。图示不代表各节点已经通过验收，逐项状态见[11 项验收报告](../tests/agent-acceptance-report.md)。
 
